@@ -7,8 +7,8 @@
 <h1>Погодный брокер</h1>
 <h3>Введите название города</h3>
 
-<form action="/city" method="GET" modelAttribute="city">
-    <input type="text" value="название города" name="city">
+<form action="city" method="GET" modelAttribute="city">
+    <input type="text"  name="city">
     <input type="submit"/>
 
 </form>

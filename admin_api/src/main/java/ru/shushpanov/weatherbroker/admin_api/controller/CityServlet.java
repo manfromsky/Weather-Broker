@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Сервлет для получения названия города
  */
-@WebServlet(name = "CityServlet", displayName = "City Servlet", loadOnStartup = 1, urlPatterns = "/city")
+@WebServlet(urlPatterns = "/city")
 public class CityServlet extends HttpServlet {
     @Inject
     private SendService service;
