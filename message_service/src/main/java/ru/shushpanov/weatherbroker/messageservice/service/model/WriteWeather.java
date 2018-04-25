@@ -1,4 +1,4 @@
-package ru.shushpanov.weatherbroker.yahoo_weather.model;
+package ru.shushpanov.weatherbroker.messageservice.service.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -9,17 +9,17 @@ import java.util.Set;
  * Модель для преобразования погоды за 10 дней в xml для передачи сообщения
  */
 @XmlRootElement(name = "weather")
-public class Weather {
+public class WriteWeather {
 
-    @XmlElementWrapper(name = "forecasts")
+    @XmlElementWrapper(name = "writeForecasts")
     @XmlElement(name = "forecast")
-    private Set<Forecast> forecasts;
+    private Set<WriteForecast> writeForecasts;
 
-    private Set<Forecast> getForecastSet() {
-        return forecasts;
+    private Set<WriteForecast> getForecastSet() {
+        return writeForecasts;
     }
 
-    public void setForecastSet(Set<Forecast> forecasts) {
-        this.forecasts = forecasts;
+    public void setForecastSet(Set<WriteForecast> writeForecasts) {
+        this.writeForecasts = writeForecasts;
     }
 }

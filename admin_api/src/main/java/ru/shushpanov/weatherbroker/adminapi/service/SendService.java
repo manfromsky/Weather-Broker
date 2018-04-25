@@ -1,4 +1,4 @@
-package ru.shushpanov.weatherbroker.admin_api.service;
+package ru.shushpanov.weatherbroker.adminapi.service;
 
 /**
  * Севрис для отправки сообщения

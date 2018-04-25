@@ -1,27 +1,32 @@
 package ru.shushpanov.weatherbroker.yahoo_weather.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.shushpanov.weatherbroker.yahoo_weather.model.City;
-import ru.shushpanov.weatherbroker.yahoo_weather.model.Forecast;
+import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
+import ru.shushpanov.weatherbroker.messageservice.service.model.ReadCity;
+import ru.shushpanov.weatherbroker.messageservice.service.model.WriteForecast;
 import ru.shushpanov.weatherbroker.yahoo_weather.service.ForecastService;
-import ru.shushpanov.weatherbroker.message_service.service.MessageService;
 import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooLocationItem;
 import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooWeatherResponse;
 
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.jms.Topic;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
 public class ForecastServiceImpl implements ForecastService {
+
+    private static final String WEATHER_TOPIC = "java:jboss/weatherTopic";
+
+    @Resource(name = WEATHER_TOPIC)
+    private Topic topic;
 
     private final MessageService messageService;
     private final RestTemplate restTemplate;
 
-    @Autowired
+    @Inject
     public ForecastServiceImpl(MessageService messageService) {
         this.messageService = messageService;
         this.restTemplate = new RestTemplate();
@@ -32,12 +37,11 @@ public class ForecastServiceImpl implements ForecastService {
      */
     @Override
     public void createAndSendMessage(String xml) throws URISyntaxException {
-        City city = (City) messageService.readXmlMessage(City.class, xml);
-        String cityName = city.getName();
+        ReadCity readCity = (ReadCity) messageService.readXmlMessage(ReadCity.class, xml);
+        String cityName = readCity.getName();
         YahooWeatherResponse response = getResponseFromYahooWeather(cityName);
-        Set<Forecast> forecastSet = getForecastSetFromYahooResponse(response);
-        String weatherResult = messageService.createXmlMessage(forecastSet);
-        sendMessage(weatherResult);
+        Set<WriteForecast> writeForecastSet = getForecastSetFromYahooResponse(response);
+        String weatherResult = messageService.createXmlMessage(writeForecastSet);
     }
 
     /**
@@ -55,30 +59,23 @@ public class ForecastServiceImpl implements ForecastService {
     /**
      * Получить список погоды за 10 дней
      */
-    private Set<Forecast> getForecastSetFromYahooResponse(YahooWeatherResponse response) {
-        Set<Forecast> forecastSet = new HashSet<>();
+    private Set<WriteForecast> getForecastSetFromYahooResponse(YahooWeatherResponse response) {
+        Set<WriteForecast> writeForecastSet = new HashSet<>();
         YahooLocationItem[] yahooLocationItems = response
                 .getYahooQuery()
                 .getResults()
                 .getChannel()
                 .getYahooLocationItems();
         for (YahooLocationItem item : yahooLocationItems) {
-            Forecast forecast = new Forecast();
-            forecast.setDate(item.getItem().getForecast().getDate());
-            forecast.setCity(item.getLocation().getCity());
-            forecast.setDay(item.getItem().getForecast().getDay());
-            forecast.setHighTemp(item.getItem().getForecast().getHigh());
-            forecast.setLowTemp(item.getItem().getForecast().getLow());
-            forecast.setDescription(item.getItem().getForecast().getText());
-            forecastSet.add(forecast);
+            WriteForecast writeForecast = new WriteForecast();
+            writeForecast.setDate(item.getItem().getForecast().getDate());
+            writeForecast.setCity(item.getLocation().getCity());
+            writeForecast.setDay(item.getItem().getForecast().getDay());
+            writeForecast.setHighTemp(item.getItem().getForecast().getHigh());
+            writeForecast.setLowTemp(item.getItem().getForecast().getLow());
+            writeForecast.setDescription(item.getItem().getForecast().getText());
+            writeForecastSet.add(writeForecast);
         }
-        return forecastSet;
-    }
-
-    /**
-     * Отправка сообщения
-     */
-    private void sendMessage(String xml) {
-
+        return writeForecastSet;
     }
 }

@@ -1,4 +1,4 @@
-package ru.shushpanov.weatherbroker.admin_api.controller;
+package ru.shushpanov.weatherbroker.adminapi.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

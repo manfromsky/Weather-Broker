@@ -8,7 +8,7 @@ import ru.shushpanov.weatherbroker.database.entity.ForecastEntity;
 import ru.shushpanov.weatherbroker.database.model.Forecast;
 import ru.shushpanov.weatherbroker.database.model.Weather;
 import ru.shushpanov.weatherbroker.database.service.DataService;
-import ru.shushpanov.weatherbroker.message_service.service.MessageService;
+import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
 
 import java.util.Set;
 import java.util.function.Function;

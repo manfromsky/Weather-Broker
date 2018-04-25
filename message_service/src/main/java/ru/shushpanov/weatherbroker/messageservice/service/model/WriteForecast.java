@@ -1,4 +1,4 @@
-package ru.shushpanov.weatherbroker.yahoo_weather.model;
+package ru.shushpanov.weatherbroker.messageservice.service.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,7 +8,7 @@ import java.util.Date;
  * Модель для преобразование погоды в xml для отправки сообщения
  */
 @XmlRootElement(name = "forecast")
-public class Forecast {
+public class WriteForecast {
 
     @XmlElement(name = "date")
     private Date date;
