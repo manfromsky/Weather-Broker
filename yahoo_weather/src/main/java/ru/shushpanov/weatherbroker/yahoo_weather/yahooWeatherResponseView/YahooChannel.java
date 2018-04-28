@@ -2,18 +2,22 @@ package ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView;
 
 
 public class YahooChannel {
+    private YahooLocation location;
+    private YahooItem item;
 
-    private YahooLocationItem[] yahooLocationItems;
-
-    public YahooLocationItem[] getYahooForecast() {
-        return yahooLocationItems;
+    public YahooLocation getLocation() {
+        return location;
     }
 
-    public YahooLocationItem[] getYahooLocationItems() {
-        return yahooLocationItems;
+    public void setLocation(YahooLocation location) {
+        this.location = location;
     }
 
-    public void setYahooLocationItems(YahooLocationItem[] yahooLocationItems) {
-        this.yahooLocationItems = yahooLocationItems;
+    public YahooItem getItem() {
+        return item;
+    }
+
+    public void setItem(YahooItem item) {
+        this.item = item;
     }
 }

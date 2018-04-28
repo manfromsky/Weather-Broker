@@ -1,7 +1,7 @@
 package ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView;
 
 
-public class YahooQuery {
+public class Query {
 
     private Integer count;
     private String created;

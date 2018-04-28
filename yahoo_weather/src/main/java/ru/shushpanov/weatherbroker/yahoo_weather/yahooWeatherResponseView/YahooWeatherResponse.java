@@ -3,13 +3,13 @@ package ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView;
 
 public class YahooWeatherResponse {
 
-    private YahooQuery yahooQuery;
+    private Query query;
 
-    public YahooQuery getYahooQuery() {
-        return yahooQuery;
+    public Query getQuery() {
+        return query;
     }
 
-    public void setYahooQuery(YahooQuery yahooQuery) {
-        this.yahooQuery = yahooQuery;
+    public void setQuery(Query query) {
+        this.query = query;
     }
 }

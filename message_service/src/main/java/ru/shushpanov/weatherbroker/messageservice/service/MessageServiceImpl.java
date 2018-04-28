@@ -1,6 +1,7 @@
-package ru.shushpanov.weatherbroker.messageservice.service.impl;
+package ru.shushpanov.weatherbroker.messageservice.service;
 
-import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
+import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
+import ru.shushpanov.weatherbroker.messageservice.model.XmlModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.xml.bind.JAXBContext;
@@ -19,16 +20,15 @@ public class MessageServiceImpl implements MessageService {
     /**
      * {@inheritDoc}
      */
-
-    public  String createXmlMessage(Object xml) {
-        String result = "";
+    public String createXmlMessage(XmlModel xml) throws WeatherBrokerServiceException {
+        String result;
         try (OutputStream os = new ByteArrayOutputStream()) {
             JAXBContext context = JAXBContext.newInstance(xml.getClass());
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(xml, os);
             result = os.toString();
         } catch (JAXBException | IOException e) {
-            e.printStackTrace();
+            throw new WeatherBrokerServiceException("Error trying to create xml from objects: " + xml, e);
         }
         return result;
     }
@@ -36,16 +36,20 @@ public class MessageServiceImpl implements MessageService {
     /**
      * {@inheritDoc}
      */
-    public Object readXmlMessage(Object model, String xml) {
+    @SuppressWarnings("unchecked")
+    public <T extends XmlModel> T readXmlMessage(String xml, Class<T> modelClass) throws WeatherBrokerServiceException {
         byte[] array = xml.getBytes();
-        Object result = null;
         try (InputStream inputStream = new ByteArrayInputStream(array)) {
-            JAXBContext jaxbContext = JAXBContext.newInstance(model.getClass());
+            JAXBContext jaxbContext = JAXBContext.newInstance(modelClass);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            result = unmarshaller.unmarshal(inputStream);
+            Object result = unmarshaller.unmarshal(inputStream);
+            if (result == null || !result.getClass().isAssignableFrom(modelClass)) {
+                throw new WeatherBrokerServiceException("Failed to generate object from xml string: " + xml);
+            }
+            return (T) result;
         } catch (JAXBException | IOException | ClassCastException e) {
-            e.printStackTrace();
+            throw new WeatherBrokerServiceException("An error occurred while trying to restore an object from " +
+                    "an xml string: " + xml);
         }
-        return result;
     }
 }

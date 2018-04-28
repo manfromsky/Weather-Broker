@@ -1,6 +1,7 @@
 package ru.shushpanov.weatherbroker.adminapi.controller;
 
 import ru.shushpanov.weatherbroker.adminapi.service.SendService;
+import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -13,7 +14,6 @@ import java.io.IOException;
 /**
  * Сервлет для получения названия города
  */
-
 @WebServlet(urlPatterns = "/city")
 public class CityServlet extends HttpServlet {
     @Inject
@@ -25,6 +25,11 @@ public class CityServlet extends HttpServlet {
         httpServletRequest.getRequestDispatcher("/WEB-INF/views/index.jsp")
                 .forward(httpServletRequest, httpServletResponse);
         String city = httpServletRequest.getParameter("city");
-        sendService.createAndSendMessage(city);
+        try {
+            sendService.send(city);
+        } catch (WeatherBrokerServiceException e) {
+            throw new ServletException(e.getMessage());
+        }
     }
 }
+
