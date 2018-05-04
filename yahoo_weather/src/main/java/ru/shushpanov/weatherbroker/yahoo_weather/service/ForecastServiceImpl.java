@@ -58,8 +58,10 @@ public class ForecastServiceImpl implements ForecastService {
         City city = messageService.readXmlMessage(xml, City.class);
         String cityName = city.getName();
         YahooWeatherResponse response = getResponseFromYahooWeather(cityName);
-        JMSContext context = connection.createContext();
-        JMSProducer producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT);
+        JMSProducer producer;
+        try (JMSContext context = connection.createContext();) {
+            producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT);
+        }
         Set<Forecast> forecastSet = getForecastSetFromYahooResponse(response);
         for (Forecast wf : forecastSet) {
             String message = messageService.createXmlMessage(wf);

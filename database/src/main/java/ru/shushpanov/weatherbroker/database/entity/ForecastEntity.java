@@ -52,21 +52,21 @@ public class ForecastEntity {
      * День прогноза
      */
     @NotNull
-    @Column(name = "forecast_day")
+    @Column(name = "forecast_day", length = 3)
     private String day;
 
     /**
      * Верхний уровень темпиратуры
      */
     @NotNull
-    @Column(name = "high_temp")
+    @Column(name = "high_temp", length = 3)
     private String highTemp;
 
     /**
      * Нижний уровень темпиратуры
      */
     @NotNull
-    @Column(name = "low_temp ")
+    @Column(name = "low_temp ", length = 3)
     private String lowTemp;
 
     /**
