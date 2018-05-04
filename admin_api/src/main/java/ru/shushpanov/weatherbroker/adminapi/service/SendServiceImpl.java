@@ -13,8 +13,6 @@ import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSContext;
-import javax.jms.JMSRuntimeException;
-import javax.jms.Queue;
 import javax.jms.Topic;
 
 /**
@@ -33,7 +31,6 @@ public class SendServiceImpl implements SendService {
     private ConnectionFactory connection;
 
     private MessageService messageService;
-
 
     @Inject
     public SendServiceImpl(MessageService messageService) {

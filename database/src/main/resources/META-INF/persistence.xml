@@ -3,12 +3,13 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
     <persistence-unit name="manager" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/WeatherBrokerData</jta-data-source>
-        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
-        <validation-mode>CALLBACK</validation-mode>
+        <class>ru.shushpanov.weatherbroker.database.entity.ForecastEntity</class>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.archive.autodetection" value="class, hbm"/>
         </properties>
     </persistence-unit>
 </persistence>

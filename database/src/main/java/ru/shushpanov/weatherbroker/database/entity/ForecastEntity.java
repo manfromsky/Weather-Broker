@@ -1,6 +1,16 @@
 package ru.shushpanov.weatherbroker.database.entity;
 
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -26,50 +36,47 @@ public class ForecastEntity {
     /**
      * Дата прогноза
      */
+    @NotNull
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "date")
+    @Column(name = "forecast_date")
     private Date date;
 
     /**
      * Название города
      */
-    @Column(name = "city")
+    @NotNull
+    @Column(name = "read_city")
     private String city;
 
     /**
      * День прогноза
      */
-    @Column(name = "day")
+    @NotNull
+    @Column(name = "forecast_day")
     private String day;
 
     /**
      * Верхний уровень темпиратуры
      */
+    @NotNull
     @Column(name = "high_temp")
     private String highTemp;
 
     /**
      * Нижний уровень темпиратуры
      */
+    @NotNull
     @Column(name = "low_temp ")
     private String lowTemp;
 
     /**
      * Описание погоды
      */
+    @NotNull
     @Column(name = "description")
     private String description;
 
     public ForecastEntity() {
-    }
-
-    public ForecastEntity(Date date, String city, String day, String highTemp, String lowTemp, String description) {
-        this.date = date;
-        this.city = city;
-        this.day = day;
-        this.highTemp = highTemp;
-        this.lowTemp = lowTemp;
-        this.description = description;
     }
 
     public Long getId() {
@@ -122,6 +129,20 @@ public class ForecastEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "ForecastEntity{" +
+                "id=" + id +
+                ", version=" + version +
+                ", date=" + date +
+                ", city='" + city + '\'' +
+                ", day='" + day + '\'' +
+                ", highTemp='" + highTemp + '\'' +
+                ", lowTemp='" + lowTemp + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
 

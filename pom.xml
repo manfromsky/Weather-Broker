@@ -30,6 +30,7 @@
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <jackson.version>1.9.13</jackson.version>
         <hibernate.version>5.2.17.Final</hibernate.version>
+        <qulice-maven-plugin.version>0.17.2</qulice-maven-plugin.version>
     </properties>
 
     <build>
@@ -43,24 +44,11 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
-            <!--<plugin>-->
-                <!--<artifactId>maven-assembly-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>single</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<descriptorRefs>-->
-                        <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
-                    <!--</descriptorRefs>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-
+            <plugin>
+                <groupId>com.qulice</groupId>
+                <artifactId>qulice-maven-plugin</artifactId>
+                <version>${qulice-maven-plugin.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -71,16 +59,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>*.properties</include>
-                    <include>*.xml</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 
     <dependencyManagement>
@@ -166,12 +144,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-data-jpa.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
                 <version>${jackson.version}</version>
@@ -188,6 +160,7 @@
                 <artifactId>hibernate-entitymanager</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

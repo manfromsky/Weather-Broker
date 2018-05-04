@@ -2,8 +2,6 @@ package ru.shushpanov.weatherbroker.yahoo_weather.service;
 
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 
-import java.net.URISyntaxException;
-
 /**
  * Сервис для отправки сообщения содержащего данные о погоде на 10 дней
  */

@@ -2,9 +2,11 @@ package ru.shushpanov.weatherbroker.database.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -18,12 +20,12 @@ public class DataReceiver implements MessageListener {
 
     private final Logger log = LoggerFactory.getLogger(DataReceiver.class);
 
-//    private DataService service;
-//
-//    @Inject
-//    public DataReceiver(DataService service) {
-//        this.service = service;
-//    }
+    private DataService service;
+
+    @Inject
+    public DataReceiver(DataService service) {
+        this.service = service;
+    }
 
     public DataReceiver() {
     }
@@ -38,10 +40,10 @@ public class DataReceiver implements MessageListener {
                     + xml, e);
         }
         log.info("Received message: " + xml);
-//        try {
-//            service.save(xml);
-//        } catch (WeatherBrokerServiceException e) {
-//            throw new RuntimeException(e.getMessage(), e);
-//        }
+        try {
+            service.save(xml);
+        } catch (WeatherBrokerServiceException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 }
