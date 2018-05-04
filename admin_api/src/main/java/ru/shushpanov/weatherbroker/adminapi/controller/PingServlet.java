@@ -12,7 +12,7 @@ import java.io.PrintWriter;
  * Сервлет для проверки соединения
  */
 @WebServlet("/ping")
-public class TestServlet extends HttpServlet {
+public class PingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
