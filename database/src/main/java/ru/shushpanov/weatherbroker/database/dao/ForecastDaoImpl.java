@@ -6,6 +6,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ * {@inheritDoc}
+ */
 @RequestScoped
 public class ForecastDaoImpl implements ForecastDao {
 

@@ -12,6 +12,9 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+/**
+ * Сервис получающий JMS сообщения с информацией о прогнозе погоды и делающий запрос для ее сохранения в базу данных
+ */
 @MessageDriven(name = "DataReceiver", activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:jboss/weatherQueue"),
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
@@ -35,15 +38,11 @@ public class DataReceiver implements MessageListener {
         String xml = "";
         try {
             xml = ((TextMessage) message).getText();
-        } catch (JMSException e) {
-            throw new RuntimeException("An error occurred while reading jms message containing xml: "
-                    + xml, e);
-        }
-        log.info("Received message: " + xml);
-        try {
             service.save(xml);
-        } catch (WeatherBrokerServiceException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            log.info("Received message: " + xml);
+        } catch (JMSException | WeatherBrokerServiceException e) {
+            throw new RuntimeException(String.format("An error occurred while reading jms message " +
+                    "containing xml: %s", xml), e);
         }
     }
 }

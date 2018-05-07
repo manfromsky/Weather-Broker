@@ -6,7 +6,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherbroker.messageservice.model.City;
 import ru.shushpanov.weatherbroker.messageservice.model.Forecast;
-import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
+import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
 import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooChannel;
 import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooWeatherResponse;
 
@@ -38,12 +38,12 @@ public class ForecastServiceImpl implements ForecastService {
     @Resource(name = CONNECTION)
     private ConnectionFactory connection;
 
-    private MessageService messageService;
+    private XmlService xmlService;
     private RestTemplate restTemplate;
 
     @Inject
-    public ForecastServiceImpl(MessageService messageService) {
-        this.messageService = messageService;
+    public ForecastServiceImpl(XmlService xmlService) {
+        this.xmlService = xmlService;
         this.restTemplate = new RestTemplate();
     }
 
@@ -53,20 +53,23 @@ public class ForecastServiceImpl implements ForecastService {
     /**
      * {@inheritDoc}
      */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createAndSendMessage(String xml) throws WeatherBrokerServiceException {
-        City city = messageService.readXmlMessage(xml, City.class);
+        City city = xmlService.readXmlMessage(xml, City.class);
         String cityName = city.getName();
         YahooWeatherResponse response = getResponseFromYahooWeather(cityName);
         JMSProducer producer;
-        try (JMSContext context = connection.createContext();) {
+        try (JMSContext context = connection.createContext()) {
             producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT);
         }
         Set<Forecast> forecastSet = getForecastSetFromYahooResponse(response);
         for (Forecast wf : forecastSet) {
-            String message = messageService.createXmlMessage(wf);
+            String message = xmlService.createXmlMessage(wf);
             producer.send(queue, message);
-            log.info("Message to send: " + message);
+            log.info("Message to send: ", message);
         }
     }
 
@@ -85,10 +88,9 @@ public class ForecastServiceImpl implements ForecastService {
                 "org%2Falltableswithkeys";
         try {
             response = restTemplate.getForObject(new URI(url), YahooWeatherResponse.class);
-            YahooWeatherResponse s = response;
         } catch (URISyntaxException e) {
-            throw new WeatherBrokerServiceException("Failed to get a response from the Yahoo Weather API service" +
-                    " in the city: " + city, e);
+            throw new WeatherBrokerServiceException(String.format("Failed to get a response from the" +
+                    " Yahoo Weather API service in the city: %s", city), e);
         }
         return response;
     }

@@ -15,22 +15,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 @RequestScoped
-public class MessageServiceImpl implements MessageService {
+public class XmlServiceImpl implements XmlService {
 
     /**
      * {@inheritDoc}
      */
     public String createXmlMessage(XmlModel xml) throws WeatherBrokerServiceException {
-        String result;
         try (OutputStream os = new ByteArrayOutputStream()) {
             JAXBContext context = JAXBContext.newInstance(xml.getClass());
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(xml, os);
-            result = os.toString();
+            return os.toString();
         } catch (JAXBException | IOException e) {
-            throw new WeatherBrokerServiceException("Error trying to create xml from objects: " + xml, e);
+            throw new WeatherBrokerServiceException
+                    (String.format("Error trying to create xml from objects: %s", xml), e);
         }
-        return result;
     }
 
     /**
@@ -44,12 +43,13 @@ public class MessageServiceImpl implements MessageService {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             Object result = unmarshaller.unmarshal(inputStream);
             if (result == null || !result.getClass().isAssignableFrom(modelClass)) {
-                throw new WeatherBrokerServiceException("Failed to generate object from xml string: " + xml);
+                throw new WeatherBrokerServiceException(String.format
+                        ("Failed to generate object from xml string: %s", xml));
             }
             return (T) result;
         } catch (JAXBException | IOException | ClassCastException e) {
-            throw new WeatherBrokerServiceException("An error occurred while trying to restore an object from " +
-                    "an xml string: " + xml);
+            throw new WeatherBrokerServiceException(String.format
+                    ("An error occurred while trying to restore an object from an xml string: %s", xml));
         }
     }
 }

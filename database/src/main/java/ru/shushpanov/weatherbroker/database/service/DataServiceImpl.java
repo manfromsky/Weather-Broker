@@ -6,7 +6,7 @@ import ru.shushpanov.weatherbroker.database.dao.ForecastDao;
 import ru.shushpanov.weatherbroker.database.entity.ForecastEntity;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherbroker.messageservice.model.Forecast;
-import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
+import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,14 +15,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * {@inheritDoc}
+ */
 @RequestScoped
 public class DataServiceImpl implements DataService {
     private final Logger log = LoggerFactory.getLogger(DataServiceImpl.class);
-    private MessageService service;
+    private XmlService service;
     private ForecastDao dao;
 
     @Inject
-    public DataServiceImpl(MessageService service, ForecastDao dao) {
+    public DataServiceImpl(XmlService service, ForecastDao dao) {
         this.service = service;
         this.dao = dao;
     }
@@ -36,10 +39,10 @@ public class DataServiceImpl implements DataService {
     @Override
     public void save(String xml) throws WeatherBrokerServiceException {
         Forecast forecast = transformXmlMessageToModel(xml);
-        log.debug("Transformed object from xml: " + forecast);
+        log.debug("Transformed object from xml: ", forecast);
         ForecastEntity entity = transformFromModelToEntity(forecast);
         dao.save(entity);
-        log.info("Saved entity: " + entity);
+        log.info("Saved entity: ", entity);
     }
 
     /**

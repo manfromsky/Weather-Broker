@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.shushpanov.weatherbroker.error.exeption.EmptyCityException;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherbroker.messageservice.model.City;
-import ru.shushpanov.weatherbroker.messageservice.service.MessageService;
+import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -30,11 +30,11 @@ public class SendServiceImpl implements SendService {
     @Resource(name = CONNECTION)
     private ConnectionFactory connection;
 
-    private MessageService messageService;
+    private XmlService xmlService;
 
     @Inject
-    public SendServiceImpl(MessageService messageService) {
-        this.messageService = messageService;
+    public SendServiceImpl(XmlService xmlService) {
+        this.xmlService = xmlService;
     }
 
     public SendServiceImpl() {
@@ -49,11 +49,11 @@ public class SendServiceImpl implements SendService {
             throw new EmptyCityException("Please enter the name of the city");
         }
         City writeCity = new City(city);
-        String message = messageService.createXmlMessage(writeCity);
+        String message = xmlService.createXmlMessage(writeCity);
         try (JMSContext context = connection.createContext();) {
             context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT).send(topic, message);
         }
-        log.info("Message to send: " + city);
+        log.info("Message to send: ", city);
     }
 }
 

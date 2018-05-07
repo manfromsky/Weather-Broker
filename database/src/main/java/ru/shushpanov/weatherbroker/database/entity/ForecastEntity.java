@@ -63,7 +63,7 @@ public class ForecastEntity {
     private String highTemp;
 
     /**
-     * Нижний уровень темпиратуры
+     * Нижний уровень температуры
      */
     @NotNull
     @Column(name = "low_temp ", length = 3)

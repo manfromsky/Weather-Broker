@@ -6,7 +6,7 @@ import ru.shushpanov.weatherbroker.messageservice.model.XmlModel;
 /**
  * Сервис для создания и чтения xml
  */
-public interface MessageService {
+public interface XmlService {
 
     /**
      * Создание xml для сообщения

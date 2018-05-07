@@ -12,6 +12,9 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+/**
+ * Сервис принимает JMS сообщения с названием города и делает запрос погоды через Yahoo Weather Api
+ */
 @MessageDriven(name = "YahooReceiver", activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:jboss/weatherTopic"),
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
@@ -36,15 +39,11 @@ public class YahooReceiver implements MessageListener {
         String city = "";
         try {
             city = ((TextMessage) message).getText();
-        } catch (JMSException e) {
-            throw new RuntimeException("Произошла ошибка при чтении jms сообщения содержащего city: "
-                    + city, e);
-        }
-        log.info("Received message: " + city);
-        try {
             service.createAndSendMessage(city);
-        } catch (WeatherBrokerServiceException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            log.info("Received message: ", city);
+        } catch (JMSException | WeatherBrokerServiceException e) {
+            throw new RuntimeException(String.format
+                    ("An error occurred while reading jms message containing city: %s", city), e);
         }
     }
 }
