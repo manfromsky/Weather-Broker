@@ -39,7 +39,7 @@ public class DataReceiver implements MessageListener {
         try {
             xml = ((TextMessage) message).getText();
             service.save(xml);
-            log.info("Received message: " + xml);
+            log.info("Received message: {}", xml);
         } catch (JMSException | WeatherBrokerServiceException e) {
             throw new RuntimeException(String.format("An error occurred while reading jms message " +
                     "containing xml: %s", xml), e);

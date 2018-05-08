@@ -2,7 +2,7 @@ USE weather_forecast;
 
 CREATE TABLE IF NOT EXISTS forecast(
 id   INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-forecast_date DATE NOT NULL,
+forecast_date DATE NOT NULL UNIQUE ,
 forecast_day VARCHAR(3)NOT NULL,
 read_city VARCHAR(255) NOT NULL,
 high_temp VARCHAR(3) NOT NULL,

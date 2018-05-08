@@ -11,6 +11,7 @@ import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooC
 import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooWeatherResponse;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
@@ -61,15 +62,14 @@ public class ForecastServiceImpl implements ForecastService {
         City city = xmlService.readXmlMessage(xml, City.class);
         String cityName = city.getName();
         YahooWeatherResponse response = getResponseFromYahooWeather(cityName);
-        JMSProducer producer;
         try (JMSContext context = connection.createContext()) {
-            producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT);
-        }
-        Set<Forecast> forecastSet = getForecastSetFromYahooResponse(response);
-        for (Forecast wf : forecastSet) {
-            String message = xmlService.createXmlMessage(wf);
-            producer.send(queue, message);
-            log.info("Message to send: ", message);
+            JMSProducer producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT);
+            Set<Forecast> forecastSet = getForecastSetFromYahooResponse(response);
+            for (Forecast wf : forecastSet) {
+                String message = xmlService.createXmlMessage(wf);
+                producer.send(queue, message);
+                log.info(String.format("Message to send: %s", message));
+            }
         }
     }
 

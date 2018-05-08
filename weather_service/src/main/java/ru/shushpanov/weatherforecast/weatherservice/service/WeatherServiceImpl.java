@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shushpanov.weatherbroker.database.entity.ForecastEntity;
+import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherforecast.weatherservice.dao.WeatherDao;
+import ru.shushpanov.weatherforecast.weatherservice.view.ForecastFilter;
 import ru.shushpanov.weatherforecast.weatherservice.view.ForecastView;
-
-import java.util.Date;
 
 /**
  * {@inheritDoc}
@@ -30,9 +30,9 @@ public class WeatherServiceImpl implements WeatherService {
      */
     @Override
     @Transactional
-    public ForecastView getForecastByDate(Date date, String city) {
-        ForecastEntity entity = dao.getByCityAndDate(date, city);
-        log.debug("received weather forecast: ", entity);
+    public ForecastView getForecastByDate(ForecastFilter filter) throws WeatherBrokerServiceException {
+        ForecastEntity entity = dao.getByCityAndDate(filter);
+        log.debug("received weather forecast: {}", entity);
         return transformFromEntityToView(entity);
     }
 
@@ -51,7 +51,7 @@ public class WeatherServiceImpl implements WeatherService {
         view.highTemp = entity.getHighTemp();
         view.lowTemp = entity.getLowTemp();
         view.description = entity.getDescription();
-        log.debug("view after transform from entity: ", view);
+        log.debug("view after transform from entity: {}", view);
         return view;
     }
 }

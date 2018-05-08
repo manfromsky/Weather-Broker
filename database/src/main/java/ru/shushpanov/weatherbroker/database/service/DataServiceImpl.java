@@ -42,7 +42,7 @@ public class DataServiceImpl implements DataService {
         log.debug("Transformed object from xml: ", forecast);
         ForecastEntity entity = transformFromModelToEntity(forecast);
         dao.save(entity);
-        log.info("Saved entity: ", entity);
+        log.info("Saved entity: {}", entity);
     }
 
     /**

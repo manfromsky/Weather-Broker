@@ -50,10 +50,10 @@ public class SendServiceImpl implements SendService {
         }
         City writeCity = new City(city);
         String message = xmlService.createXmlMessage(writeCity);
-        try (JMSContext context = connection.createContext();) {
+        try (JMSContext context = connection.createContext()) {
             context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT).send(topic, message);
         }
-        log.info("Message to send: ", city);
+        log.info("Message to send: {}", city);
     }
 }
 

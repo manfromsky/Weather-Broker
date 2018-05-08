@@ -40,7 +40,7 @@ public class YahooReceiver implements MessageListener {
         try {
             city = ((TextMessage) message).getText();
             service.createAndSendMessage(city);
-            log.info("Received message: ", city);
+            log.info("Received message: {}", city);
         } catch (JMSException | WeatherBrokerServiceException e) {
             throw new RuntimeException(String.format
                     ("An error occurred while reading jms message containing city: %s", city), e);
