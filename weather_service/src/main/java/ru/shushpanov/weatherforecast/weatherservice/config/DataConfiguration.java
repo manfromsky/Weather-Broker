@@ -12,30 +12,25 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.jta.JtaTransactionManager;
+import ru.shushpanov.weatherforecast.weatherservice.dao.WeatherDao;
 
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
 
 
-@Configuration
 @PropertySource({"classpath:persistence-jndi.properties"})
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackageClasses = WeatherDao.class)
 @ComponentScan(value = {"ru.shushpanov.weatherforecast.weatherservice"})
-@EnableJpaRepositories(basePackages = "ru.shushpanov.weatherforecast.weatherservice.dao")
+@Configuration
 public class DataConfiguration {
 
     @Autowired
     private Environment env;
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory()
-            throws NamingException {
-        LocalContainerEntityManagerFactoryBean em
-                = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        return em;
-    }
 
     @Bean
     public DataSource dataSource() throws NamingException {
@@ -43,10 +38,28 @@ public class DataConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(emf);
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource());
+        return emf;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JtaTransactionManager transactionManager = new org.springframework.transaction.jta.JtaTransactionManager();
+        transactionManager.setTransactionManager(jbossTransactionManager());
+        transactionManager.setUserTransaction(jbossUserTransaction());
         return transactionManager;
+    }
+
+    @Bean
+    public UserTransaction jbossUserTransaction() {
+        return null;
+    }
+
+    @Bean
+    public TransactionManager jbossTransactionManager() {
+        return null;
     }
 }
 

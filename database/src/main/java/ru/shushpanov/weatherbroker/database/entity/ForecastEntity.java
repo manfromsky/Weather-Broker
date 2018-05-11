@@ -38,7 +38,7 @@ public class ForecastEntity {
      */
     @NotNull
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "forecast_date")
+    @Column(name = "forecast_date",unique = true)
     private Date date;
 
     /**

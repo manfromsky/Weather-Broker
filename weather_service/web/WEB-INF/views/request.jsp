@@ -1,24 +1,24 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div>
+        <div>
             <h1 class="page-header">Weather Broker</h1>
-            <form action="#" th:action="@{registration/submit}"
-                  th:object="${filter}" method="POST">
+            <spring:form action="forecast/submit" method="post" modelAttribute="filter">
                 <div class="form-group">
                     <label>Date</label>
-                    <input type="date" class="form-control" th:field="*{date}"/>
+                    <spring:input type= "date" path="date"/>
                 </div>
                 <div class="form-group">
                     <label>City</label>
-                    <input type="text" class="form-control" th:field="*{city}"/>
+                    <spring:input type="text" path="city"/>
                 </div>
 
                 <button type="submit" class="btn btn-default">Ok</button>
-            </form>
+            </spring:form>
         </div>
     </div>
 </div>
