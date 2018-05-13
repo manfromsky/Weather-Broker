@@ -34,6 +34,7 @@ public class WeatherController {
     @RequestMapping(value = {"/forecast"}, method = RequestMethod.GET)
     public ModelAndView getForecastFilter(@ModelAttribute("filter") ForecastFilter filter) {
         ModelAndView view = new ModelAndView();
+        view.addObject("filter", filter)
         view.addObject("date", filter.date);
         view.addObject("city", filter.city);
         view.setViewName("request");

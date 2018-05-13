@@ -1,20 +1,20 @@
 package ru.shushpanov.weatherforecast.weatherservice.view;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import ru.shushpanov.weatherforecast.weatherservice.service.JsonDataDeserializer;
 
 import java.util.Calendar;
 import java.util.Date;
 
 @Component
 public class ForecastFilter {
-
-    public Calendar date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date date;
 
     public String city;
 
-    public void setDate(Calendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -22,8 +22,8 @@ public class ForecastFilter {
         this.city = city;
     }
 
-    @JsonDeserialize(using = JsonDataDeserializer.class)
-    public Calendar getDate() {
+
+    public Date getDate() {
         return date;
     }
 
