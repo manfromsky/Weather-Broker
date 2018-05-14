@@ -83,14 +83,12 @@ public class DataServiceImpl implements DataService {
      * @throws WeatherBrokerServiceException Ошибка, сгенерированная при попытке преобразования строки с датой в объект
      */
     private Date transformFromStringToDate(String date) throws WeatherBrokerServiceException {
-        Date result;
         String datePattern = "dd MMM yyyy";
         SimpleDateFormat format = new SimpleDateFormat(datePattern, Locale.US);
         try {
-            result = format.parse(date);
+            return format.parse(date);
         } catch (ParseException e) {
             throw new WeatherBrokerServiceException("Internal service error", e);
         }
-        return result;
     }
 }

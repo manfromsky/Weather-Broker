@@ -75,9 +75,6 @@ public class ForecastEntity {
     @Column(name = "description")
     private String description;
 
-    public ForecastEntity() {
-    }
-
     public Long getId() {
         return id;
     }
