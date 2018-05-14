@@ -1,17 +1,13 @@
 package ru.shushpanov.weatherforecast.weatherservice.view;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
 import java.util.Date;
 
-@Component
 public class ForecastFilter {
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date date;
-
     public String city;
 
     public void setDate(Date date) {
@@ -21,7 +17,6 @@ public class ForecastFilter {
     public void setCity(String city) {
         this.city = city;
     }
-
 
     public Date getDate() {
         return date;

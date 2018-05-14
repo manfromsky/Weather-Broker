@@ -3,7 +3,7 @@ package ru.shushpanov.weatherbroker.database.dao;
 import ru.shushpanov.weatherbroker.database.entity.ForecastEntity;
 
 /**
- * Сервис, устанавливающий связь с базой данных для последующего сохранения прогноза
+ * Сервис, устанавливающий связь с базой данных, для последующего сохранения прогноза
  */
 public interface ForecastDao {
     /**

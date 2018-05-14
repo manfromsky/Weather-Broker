@@ -13,28 +13,30 @@ import ru.shushpanov.weatherforecast.weatherservice.service.WeatherService;
 import ru.shushpanov.weatherforecast.weatherservice.view.ForecastFilter;
 import ru.shushpanov.weatherforecast.weatherservice.view.ForecastView;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.NoResultException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Контроллер обрабатывает данные, введеные клиентом, для получения прогноза погоды по дате и названию города.
+ * Согласно полученным данным, клиенту выводиться прогноз погоды согласно введенным им дате и названию города
+ */
 @Controller
 @SessionAttributes(value = "filter")
 @RequestMapping(value = "/api/weatherbroker", produces = APPLICATION_JSON_VALUE)
 public class WeatherController {
     private final org.slf4j.Logger log = LoggerFactory.getLogger(WeatherController.class);
-//    private final WeatherService service;
-//
-//    @Autowired
-//    public WeatherController(WeatherService service) {
-//        this.service = service;
-//    }
+    private final WeatherService service;
+
+    @Autowired
+    public WeatherController(WeatherService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = {"/forecast"}, method = RequestMethod.GET)
     public ModelAndView getForecastFilter(@ModelAttribute("filter") ForecastFilter filter) {
         ModelAndView view = new ModelAndView();
-        view.addObject("filter", filter)
+        view.addObject("filter", filter);
         view.addObject("date", filter.date);
         view.addObject("city", filter.city);
         view.setViewName("request");
@@ -52,9 +54,20 @@ public class WeatherController {
         ModelAndView view = new ModelAndView();
         log.info("Filter is: {}", filter);
         view.setViewName("response");
-        ForecastView forecastView = new ForecastView(new Date(), "city", "day",
-                "hi", "low", "description");
+        ForecastView forecastView;
+        try {
+            forecastView = service.getForecastByFilter(filter);
+        } catch (NoResultException e) {
+            return new ModelAndView("redirect:/api/weatherbroker/error");
+        }
         view.addObject("forecastView", forecastView);
+        return view;
+    }
+
+    @RequestMapping(value = "/error")
+    public ModelAndView error() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("error");
         return view;
     }
 }

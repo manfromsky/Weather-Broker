@@ -1,6 +1,5 @@
 package ru.shushpanov.weatherbroker.database.entity;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -3,16 +3,12 @@ package ru.shushpanov.weatherforecast.weatherservice.view;
 import java.util.Date;
 
 public class ForecastView {
+
     public Date date;
-
     public String city;
-
     public String day;
-
     public String highTemp;
-
     public String lowTemp;
-
     public String description;
 
     public ForecastView(Date date, String city, String day, String highTemp, String lowTemp, String description) {

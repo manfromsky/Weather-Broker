@@ -14,5 +14,5 @@ public interface WeatherService {
      * @param filter Объект содержащий информацию для поиска конкретного прогноза погоды
      * @return Объект содержащий информацию о запрашиваемом пронозе погоды
      */
-    ForecastView getForecastByDate(ForecastFilter filter) throws WeatherBrokerServiceException;
+    ForecastView getForecastByFilter(ForecastFilter filter) throws WeatherBrokerServiceException;
 }

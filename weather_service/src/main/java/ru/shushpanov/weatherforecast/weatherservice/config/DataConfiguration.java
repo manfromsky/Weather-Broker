@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jndi.JndiTemplate;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -16,12 +15,11 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 import ru.shushpanov.weatherforecast.weatherservice.dao.WeatherDao;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
 
-
+/**
+ * Конфигурация для работы с базой даннных
+ */
 @PropertySource({"classpath:persistence-jndi.properties"})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackageClasses = WeatherDao.class)
@@ -46,20 +44,7 @@ public class DataConfiguration {
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-        JtaTransactionManager transactionManager = new org.springframework.transaction.jta.JtaTransactionManager();
-        transactionManager.setTransactionManager(jbossTransactionManager());
-        transactionManager.setUserTransaction(jbossUserTransaction());
-        return transactionManager;
-    }
-
-    @Bean
-    public UserTransaction jbossUserTransaction() {
-        return null;
-    }
-
-    @Bean
-    public TransactionManager jbossTransactionManager() {
-        return null;
+        return new JtaTransactionManager();
     }
 }
 

@@ -2,6 +2,9 @@ package ru.shushpanov.weatherforecast.weatherservice.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Web конфигурация
+ */
 public class WebConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override

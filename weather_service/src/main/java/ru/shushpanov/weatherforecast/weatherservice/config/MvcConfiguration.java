@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+/**
+ * Mvс конфигурация
+ */
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = "ru.shushpanov.weatherforecast.weatherservice")
