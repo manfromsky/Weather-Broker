@@ -1,7 +1,7 @@
 package ru.shushpanov.weatherbroker.error.exeption;
 
 /**
- * Ошибка сгенерированная в результате внутренней работы сервиса
+ * Ошибка, сгенерированная в результате внутренней работы сервиса
  */
 public class WeatherBrokerServiceException extends Exception {
     public WeatherBrokerServiceException(String message, Throwable cause) {

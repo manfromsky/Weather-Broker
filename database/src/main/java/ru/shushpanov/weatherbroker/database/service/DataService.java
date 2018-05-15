@@ -10,7 +10,7 @@ public interface DataService {
     /**
      * Сохранение в базу данных о погоде
      *
-     * @param xml Строка содержащая информацию о погоде
+     * @param xml Строка, содержащая информацию о погоде
      */
     void save(String xml) throws WeatherBrokerServiceException;
 }

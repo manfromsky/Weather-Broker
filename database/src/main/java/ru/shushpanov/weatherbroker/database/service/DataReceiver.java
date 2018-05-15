@@ -22,7 +22,6 @@ import javax.jms.TextMessage;
 public class DataReceiver implements MessageListener {
 
     private final Logger log = LoggerFactory.getLogger(DataReceiver.class);
-
     private DataService service;
 
     @Inject
@@ -41,8 +40,10 @@ public class DataReceiver implements MessageListener {
             service.save(xml);
             log.info("Received message: {}", xml);
         } catch (JMSException | WeatherBrokerServiceException e) {
-            throw new RuntimeException(String.format("An error occurred while reading jms message " +
-                    "containing xml: %s", xml), e);
+            throw new RuntimeException(
+                    String.format("An error occurred while reading jms message containing xml: %s", xml),
+                    e
+            );
         }
     }
 }

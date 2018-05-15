@@ -33,6 +33,12 @@ public class WeatherController {
         this.service = service;
     }
 
+    /**
+     * Ввод информации кдиентом, для последующего запроса на получения прогноза погоды
+     *
+     * @param filter Объект, содержащий информацию необходимую для поиска прогноза в базе данных
+     * @return Форма для ввода информации клиентом
+     */
     @RequestMapping(value = {"/forecast"}, method = RequestMethod.GET)
     public ModelAndView getForecastFilter(@ModelAttribute("filter") ForecastFilter filter) {
         ModelAndView view = new ModelAndView();
@@ -48,6 +54,14 @@ public class WeatherController {
         return new ForecastFilter();
     }
 
+    /**
+     * Отображении информации о запрашиваемом прогнозе
+     *
+     * @param filter Объект, заполненный информацией необходимой для поиска прогноза в базе данных
+     * @return Форма для вывода информации о запрашиваемом прогнозе
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное неправильным воодом информации,
+     *                                       необходимой для запроса к базе данных
+     */
     @RequestMapping(value = "/forecast/submit", method = RequestMethod.POST)
     public ModelAndView getForecast(@ModelAttribute("filter") ForecastFilter filter)
             throws WeatherBrokerServiceException {
@@ -64,6 +78,11 @@ public class WeatherController {
         return view;
     }
 
+    /**
+     * Отображение информации об ошибке приложения
+     *
+     * @return Форма, информирующая об ошибке работы сервиса
+     */
     @RequestMapping(value = "/error")
     public ModelAndView error() {
         ModelAndView view = new ModelAndView();

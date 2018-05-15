@@ -34,6 +34,7 @@
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <reactive-streams.version>1.0.2</reactive-streams.version>
         <jstl.version>1.2</jstl.version>
+        <lang3.version>3.7</lang3.version>
     </properties>
 
     <build>
@@ -123,7 +124,7 @@
 
             <dependency>
                 <groupId>TestProject</groupId>
-                <artifactId>database</artifactId>
+                <artifactId>Database</artifactId>
                 <version>${weather-broker.version}</version>
                 <scope>compile</scope>
             </dependency>
@@ -205,6 +206,12 @@
                 <artifactId>jstl</artifactId>
                 <version>${jstl.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${lang3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

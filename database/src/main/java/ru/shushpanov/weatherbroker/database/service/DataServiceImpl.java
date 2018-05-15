@@ -10,6 +10,7 @@ import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class DataServiceImpl implements DataService {
     private final Logger log = LoggerFactory.getLogger(DataServiceImpl.class);
     private XmlService service;
     private ForecastDao dao;
+    private static final String DATE_PATTERN = "dd MMM yyyy";
 
     @Inject
     public DataServiceImpl(XmlService service, ForecastDao dao) {
@@ -37,12 +39,20 @@ public class DataServiceImpl implements DataService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public void save(String xml) throws WeatherBrokerServiceException {
+        if (xml == null) {
+            throw new WeatherBrokerServiceException("message contain name of the city is null");
+        }
         Forecast forecast = transformXmlMessageToModel(xml);
-        log.debug("Transformed object from xml: ", forecast);
-        ForecastEntity entity = transformFromModelToEntity(forecast);
-        dao.save(entity);
-        log.info("Saved entity: {}", entity);
+        log.debug("Transformed object from xml: {}", forecast);
+        Date date = transformFromStringToDate(forecast.getDate());
+        String city = forecast.getCity();
+        if (dao.isForecastDuplicate(date, city)) {
+            ForecastEntity entity = transformFromModelToEntity(forecast);
+            dao.save(entity);
+            log.info("Saved entity: {}", entity);
+        }
     }
 
     /**
@@ -83,8 +93,7 @@ public class DataServiceImpl implements DataService {
      * @throws WeatherBrokerServiceException Ошибка, сгенерированная при попытке преобразования строки с датой в объект
      */
     private Date transformFromStringToDate(String date) throws WeatherBrokerServiceException {
-        String datePattern = "dd MMM yyyy";
-        SimpleDateFormat format = new SimpleDateFormat(datePattern, Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat(DATE_PATTERN, Locale.US);
         try {
             return format.parse(date);
         } catch (ParseException e) {

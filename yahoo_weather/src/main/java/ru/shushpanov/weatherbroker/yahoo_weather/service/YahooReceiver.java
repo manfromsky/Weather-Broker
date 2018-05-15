@@ -42,8 +42,10 @@ public class YahooReceiver implements MessageListener {
             service.createAndSendMessage(city);
             log.info("Received message: {}", city);
         } catch (JMSException | WeatherBrokerServiceException e) {
-            throw new RuntimeException(String.format
-                    ("An error occurred while reading jms message containing city: %s", city), e);
+            throw new RuntimeException(
+                    String.format("An error occurred while reading jms message containing city: %s", city),
+                    e
+            );
         }
     }
 }

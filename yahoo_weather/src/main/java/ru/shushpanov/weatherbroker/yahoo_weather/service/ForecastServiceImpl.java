@@ -7,11 +7,10 @@ import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherbroker.messageservice.model.City;
 import ru.shushpanov.weatherbroker.messageservice.model.Forecast;
 import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
-import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooChannel;
-import ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView.YahooWeatherResponse;
+import ru.shushpanov.weatherbroker.yahoo_weather.view.YahooChannel;
+import ru.shushpanov.weatherbroker.yahoo_weather.view.YahooWeatherResponse;
 
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
@@ -54,9 +53,6 @@ public class ForecastServiceImpl implements ForecastService {
     /**
      * {@inheritDoc}
      */
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void createAndSendMessage(String xml) throws WeatherBrokerServiceException {
         City city = xmlService.readXmlMessage(xml, City.class);
@@ -89,8 +85,10 @@ public class ForecastServiceImpl implements ForecastService {
         try {
             response = restTemplate.getForObject(new URI(url), YahooWeatherResponse.class);
         } catch (URISyntaxException e) {
-            throw new WeatherBrokerServiceException(String.format("Failed to get a response from the" +
-                    " Yahoo Weather API service in the city: %s", city), e);
+            throw new WeatherBrokerServiceException(
+                    String.format("Failed to get a response from the Yahoo Weather API service in the city: %s", city),
+                    e
+            );
         }
         return response;
     }

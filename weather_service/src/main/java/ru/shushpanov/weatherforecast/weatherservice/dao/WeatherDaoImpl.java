@@ -1,5 +1,6 @@
 package ru.shushpanov.weatherforecast.weatherservice.dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import ru.shushpanov.weatherbroker.database.entity.ForecastEntity;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
@@ -27,29 +28,26 @@ public class WeatherDaoImpl implements WeatherDao {
      */
     @Override
     public ForecastEntity getByCityAndDate(ForecastFilter filter) throws WeatherBrokerServiceException {
-
+        if (filter == null) {
+            throw new WeatherBrokerServiceException(
+                    "no information is available to search for the forecast (param filter is null)"
+            );
+        }
         Date date = filter.date;
         String city = filter.city;
+        if (date == null && StringUtils.isBlank(city)) {
+            throw new WeatherBrokerServiceException("date or city is empty");
+        }
 
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<ForecastEntity> criteriaQuery = builder.createQuery(ForecastEntity.class);
         Root<ForecastEntity> root = criteriaQuery.from(ForecastEntity.class);
         criteriaQuery.select(root);
         Predicate criteria = builder.conjunction();
-
-        if (date != null) {
-            Predicate predicate = builder.equal(root.get("date"), date);
-            criteria = builder.and(criteria, predicate);
-        } else {
-            throw new WeatherBrokerServiceException("date field can not be empty");
-        }
-
-        if (city != null) {
-            Predicate predicate = builder.equal(root.get("city"), city);
-            criteria = builder.and(criteria, predicate);
-        } else {
-            throw new WeatherBrokerServiceException("city field can not be empty");
-        }
+        Predicate datePredicate = builder.equal(root.get("date"), date);
+        criteria = builder.and(criteria, datePredicate);
+        Predicate cityPredicate = builder.equal(root.get("city"), city);
+        criteria = builder.and(criteria, cityPredicate);
         criteriaQuery.where(criteria);
 
         return em.createQuery(criteriaQuery).getSingleResult();

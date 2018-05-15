@@ -1,4 +1,4 @@
-package ru.shushpanov.weatherbroker.yahoo_weather.yahooWeatherResponseView;
+package ru.shushpanov.weatherbroker.yahoo_weather.view;
 
 
 public class YahooResult {

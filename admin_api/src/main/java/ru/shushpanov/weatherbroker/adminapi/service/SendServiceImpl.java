@@ -1,5 +1,6 @@
 package ru.shushpanov.weatherbroker.adminapi.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.shushpanov.weatherbroker.error.exeption.EmptyCityException;
@@ -45,7 +46,7 @@ public class SendServiceImpl implements SendService {
      */
     @Override
     public void send(String city) throws WeatherBrokerServiceException {
-        if (city == null) {
+        if (StringUtils.isBlank(city)) {
             throw new EmptyCityException("Please enter the name of the city");
         }
         City writeCity = new City(city);

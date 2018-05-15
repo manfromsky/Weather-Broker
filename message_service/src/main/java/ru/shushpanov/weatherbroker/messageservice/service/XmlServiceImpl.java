@@ -27,8 +27,10 @@ public class XmlServiceImpl implements XmlService {
             marshaller.marshal(xml, os);
             return os.toString();
         } catch (JAXBException | IOException e) {
-            throw new WeatherBrokerServiceException
-                    (String.format("Error trying to create xml from objects: %s", xml), e);
+            throw new WeatherBrokerServiceException(
+                    String.format("Error trying to create xml from objects: %s", xml),
+                    e
+            );
         }
     }
 
@@ -43,13 +45,15 @@ public class XmlServiceImpl implements XmlService {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             Object result = unmarshaller.unmarshal(inputStream);
             if (result == null || !result.getClass().isAssignableFrom(modelClass)) {
-                throw new WeatherBrokerServiceException(String.format
-                        ("Failed to generate object from xml string: %s", xml));
+                throw new WeatherBrokerServiceException(
+                        String.format("Failed to generate object from xml string: %s", xml)
+                );
             }
             return (T) result;
         } catch (JAXBException | IOException | ClassCastException e) {
-            throw new WeatherBrokerServiceException(String.format
-                    ("An error occurred while trying to restore an object from an xml string: %s", xml));
+            throw new WeatherBrokerServiceException(
+                    String.format("An error occurred while trying to restore an object from an xml string: %s", xml)
+            );
         }
     }
 }
