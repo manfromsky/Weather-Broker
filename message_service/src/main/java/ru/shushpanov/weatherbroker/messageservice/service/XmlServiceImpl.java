@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * {@inheritDoc}
+ */
 @RequestScoped
 public class XmlServiceImpl implements XmlService {
 

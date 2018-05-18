@@ -29,6 +29,10 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     @Transactional
     public ForecastView getForecastByFilter(ForecastFilter filter) throws WeatherBrokerServiceException {
+        if (filter == null) {
+            throw new WeatherBrokerServiceException("Please enter the name of the city and date");
+        }
+
         ForecastEntity entity = dao.getByCityAndDate(filter);
         log.debug("received weather forecast: {}", entity);
         return transformFromEntityToView(entity);

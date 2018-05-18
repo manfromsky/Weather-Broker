@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
- * Модель для преобразование погоды в xml для отправки сообщения
+ * Модель для преобразование погоды в строку xml для отправки сообщения
  */
 @XmlRootElement(name = "forecast")
 @XmlAccessorType(XmlAccessType.FIELD)

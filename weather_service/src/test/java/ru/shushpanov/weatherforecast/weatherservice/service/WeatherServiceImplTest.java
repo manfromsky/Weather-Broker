@@ -25,6 +25,8 @@ public class WeatherServiceImplTest {
     private SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.US);
     private Date date = format.parse("21 May 2018");
     private String city = "Penza";
+    private ForecastFilter nullFilter = null;
+    private ForecastFilter filterWithNullDate = new ForecastFilter(null, city);
     private ForecastFilter filter = new ForecastFilter(date, city);
     private ForecastEntity entity = new ForecastEntity(date, city, "Mon", "74", "54",
             "Scattered Thunderstorms");
@@ -43,11 +45,30 @@ public class WeatherServiceImplTest {
     public WeatherServiceImplTest() throws ParseException {
     }
 
+    /**
+     * Проверяем вызов метода WeatherDaoImpl.getByCityAndDate. Сравниваем результат работы метода
+     * WeatherServiceImpl.getForecastByFilter c эталоном
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное некорректными данными,
+     *                                       пришедшими от пользователя
+     */
     @Test
     public void testGetForecastByFilter() throws WeatherBrokerServiceException {
         expect(dao.getByCityAndDate(filter)).andStubReturn(entity);
         replay(dao);
         Assert.assertEquals(service.getForecastByFilter(filter), view);
         verify(dao);
+    }
+
+    /**
+     * Проверяем сгенерируется ли исключении при полученнии методом WeatherServiceImpl.getForecastByFilter()
+     * аргумента равного null
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное некорректными данными,
+     *                                       пришедшими от пользователя
+     */
+    @Test(expected = WeatherBrokerServiceException.class)
+    public void testGetForecastByNullFilter() throws WeatherBrokerServiceException {
+        service.getForecastByFilter(nullFilter);
     }
 }

@@ -19,12 +19,22 @@ public class XmlServiceImplTest {
             "59", "Mostly Cloudy");
     private XmlServiceImpl service = new XmlServiceImpl();
 
+    /**
+     * Проверяем результат работы метода XmlServiceImpl.createXmlMessage(XmlModel xml) с эталонным
+     *
+     * @throws WeatherBrokerServiceException Исключение, возникшее при преобразовании объекста в xml
+     */
     @Test
     public void testCreateXmlMessage() throws WeatherBrokerServiceException {
         Assert.assertEquals(service.createXmlMessage(cityModel), cityXml);
         Assert.assertEquals(service.createXmlMessage(forecast), forecastXml);
     }
 
+    /**
+     * Проверяем результа работы метода XmlServiceImpl.readXmlMessage(String xml, Class<T> modelClass) с эталонным
+     *
+     * @throws WeatherBrokerServiceException Исключение, возникшее при преобразовании xml в объект
+     */
     @Test
     public void testReadXmlMessage() throws WeatherBrokerServiceException {
         Assert.assertEquals(service.readXmlMessage(cityXml, City.class), cityModel);

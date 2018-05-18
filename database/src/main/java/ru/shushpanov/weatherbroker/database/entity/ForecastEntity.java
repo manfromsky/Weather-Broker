@@ -19,6 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "forecast")
 public class ForecastEntity {
+
     /**
      * Идентификатор проноза
      */
@@ -56,18 +57,25 @@ public class ForecastEntity {
     private String day;
 
     /**
-     * Верхний уровень темпиратуры
+     * Верхняя граница темпиратуры
      */
     @NotNull
     @Column(name = "high_temp", length = 3)
     private String highTemp;
 
     /**
-     * Нижний уровень температуры
+     * Нижняя граница температуры
      */
     @NotNull
     @Column(name = "low_temp ", length = 3)
     private String lowTemp;
+
+    /**
+     * Описание погоды
+     */
+    @NotNull
+    @Column(name = "description")
+    private String description;
 
     public ForecastEntity(@NotNull Date date, @NotNull String city, @NotNull String day, @NotNull String highTemp,
                           @NotNull String lowTemp, @NotNull String description) {
@@ -81,13 +89,6 @@ public class ForecastEntity {
 
     public ForecastEntity() {
     }
-
-    /**
-     * Описание погоды
-     */
-    @NotNull
-    @Column(name = "description")
-    private String description;
 
     public Long getId() {
         return id;

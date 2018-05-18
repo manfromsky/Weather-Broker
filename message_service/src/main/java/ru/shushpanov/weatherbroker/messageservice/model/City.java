@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
- * Модель для преобразования названия города в xml
+ * Модель для преобразования названия города в строку xml
  */
 @XmlRootElement(name = "City")
 public class City implements XmlModel {

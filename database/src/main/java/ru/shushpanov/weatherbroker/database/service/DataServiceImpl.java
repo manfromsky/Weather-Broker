@@ -43,7 +43,7 @@ public class DataServiceImpl implements DataService {
     @Transactional
     public void save(String xml) throws WeatherBrokerServiceException {
         if (StringUtils.isBlank(xml)) {
-            throw new WeatherBrokerServiceException("message contain name of the city is null or empty");
+            throw new WeatherBrokerServiceException("message is null or empty");
         }
         Forecast forecast = transformXmlMessageToModel(xml);
         log.debug("Transformed object from xml: {}", forecast);
@@ -60,8 +60,8 @@ public class DataServiceImpl implements DataService {
      * Преобразование строки xml в объект, содержащий информацию о погоде
      *
      * @param xml Строка содержащая xml с данными прогноза погоды
-     * @return Объект с полями заполненными данными о прогнозе
-     * @throws WeatherBrokerServiceException Ошибка, возникшая при преобразовании xml в объект
+     * @return Объект с полями, заполненными данными о прогнозе
+     * @throws WeatherBrokerServiceException Ошибка, сгенерированная при преобразовании xml в объект
      */
     private Forecast transformXmlMessageToModel(String xml) throws WeatherBrokerServiceException {
         return service.readXmlMessage(xml, Forecast.class);
@@ -71,7 +71,7 @@ public class DataServiceImpl implements DataService {
      * Преобразование объекта, содержащего информацию о погоде, в сущность, сопоставленную с таблицей в базе данных
      *
      * @param forecast Объект, содержащий информацию о погоде
-     * @return Сущность сопоставленная с таблицей в базе данных
+     * @return Сущность, сопоставленная с таблицей в базе данных
      * @throws WeatherBrokerServiceException Ошибка, сгенерированная при попытке преобразования строки с датой в объект
      */
     private ForecastEntity transformFromModelToEntity(Forecast forecast) throws WeatherBrokerServiceException {

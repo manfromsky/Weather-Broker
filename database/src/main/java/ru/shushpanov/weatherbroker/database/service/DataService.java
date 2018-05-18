@@ -11,6 +11,8 @@ public interface DataService {
      * Сохранение в базу данных о погоде
      *
      * @param xml Строка, содержащая информацию о погоде
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при полученни методом пустой или равной null
+     *                                       строки
      */
     void save(String xml) throws WeatherBrokerServiceException;
 }

@@ -13,7 +13,7 @@ public interface XmlService {
      *
      * @param xml Обект, передаваеммый для преобразования в xml, реализующий интерфейс {@link XmlModel}
      * @return Строка в формате xml, полученная после преобразования объекта {@link XmlModel}
-     * @throws WeatherBrokerServiceException Ошибка возникшая при преобразовании объекста в xml
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при преобразовании объекста в xml
      */
     String createXmlMessage(XmlModel xml) throws WeatherBrokerServiceException;
 
@@ -25,7 +25,7 @@ public interface XmlService {
      * @param modelClass Класс в объект которого будет выполнено преобразование входного xml
      * @param <T>        Класс реализующий интерфейс {@link XmlModel}
      * @return Объект, получившийся после преобразования строки xml
-     * @throws WeatherBrokerServiceException Ошибка, возникшая при преобразовании xml в объект
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при преобразовании xml в объект
      */
     <T extends XmlModel> T readXmlMessage(String xml, Class<T> modelClass) throws WeatherBrokerServiceException;
 }

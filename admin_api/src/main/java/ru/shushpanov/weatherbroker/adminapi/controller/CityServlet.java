@@ -1,5 +1,6 @@
 package ru.shushpanov.weatherbroker.adminapi.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import ru.shushpanov.weatherbroker.adminapi.service.SendService;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 
@@ -25,10 +26,12 @@ public class CityServlet extends HttpServlet {
         httpServletRequest.getRequestDispatcher("/WEB-INF/views/index.jsp")
                 .forward(httpServletRequest, httpServletResponse);
         String city = httpServletRequest.getParameter("city");
-        try {
-            sendService.send(city);
-        } catch (WeatherBrokerServiceException e) {
-            throw new ServletException(e.getMessage());
+        if (StringUtils.isNotBlank(city)) {
+            try {
+                sendService.send(city);
+            } catch (WeatherBrokerServiceException e) {
+                throw new ServletException(e.getMessage());
+            }
         }
     }
 }

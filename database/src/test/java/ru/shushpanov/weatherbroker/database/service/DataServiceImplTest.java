@@ -50,6 +50,13 @@ public class DataServiceImplTest {
     public DataServiceImplTest() throws ParseException {
     }
 
+    /**
+     * Проверяем вызов методов: XmlServiceImpl.readXmlMessage(String xml, Class<T> modelClass),
+     * ForecastDaoImpl.isForecastDuplicate(Date date, String city)
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при полученни методом пустой или равной null
+     *                                       строки
+     */
     @Test
     public void testSave() throws WeatherBrokerServiceException {
         expect(service.readXmlMessage(xml, Forecast.class)).andStubReturn(forecast);
@@ -61,16 +68,36 @@ public class DataServiceImplTest {
         verify(dao);
     }
 
+    /**
+     * Проверяем, сгенерируется ли исключение при получении методом строки равной null
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при полученни методом пустой или равной null
+     *                                       строки
+     */
     @Test(expected = WeatherBrokerServiceException.class)
     public void testSaveWithNullXml() throws WeatherBrokerServiceException {
         dataService.save(nullXml);
     }
 
+    /**
+     * Проверяем сгенерируется ли исключение при получении методом пустой строки
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при полученни методом пустой или равной null
+     *                                       строки
+     */
     @Test(expected = WeatherBrokerServiceException.class)
     public void testSaveWithEmptyXml() throws WeatherBrokerServiceException {
         dataService.save(emptyXml);
     }
 
+    /**
+     * Проверяем сгенерируется ли исключение при возвращении методом
+     * XmlServiceImpl.readXmlMessage(String xml, Class<T> modelClass) объекта класса
+     * {@link ru.shushpanov.weatherbroker.messageservice.model.Forecast} c полем Forecast.date равным неккоректному
+     * значению
+     *
+     * @throws WeatherBrokerServiceException Ошибка, сгенерированная при попытке преобразования строки с датой в объект
+     */
     @Test(expected = WeatherBrokerServiceException.class)
     public void testSaveWithWrongDate() throws WeatherBrokerServiceException {
         expect(service.readXmlMessage(xml, Forecast.class)).andStubReturn(forecastWithWrongDate);

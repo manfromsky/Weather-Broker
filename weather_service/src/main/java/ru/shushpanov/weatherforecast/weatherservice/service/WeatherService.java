@@ -5,7 +5,7 @@ import ru.shushpanov.weatherforecast.weatherservice.view.ForecastFilter;
 import ru.shushpanov.weatherforecast.weatherservice.view.ForecastView;
 
 /**
- * Сервис запрашивает информацию о погоде согласно введеным пользователем параметрам у базы данных
+ * Сервис запрашивает информацию о погоде, согласно введеным пользователем параметрам, у базы данных
  */
 public interface WeatherService {
     /**

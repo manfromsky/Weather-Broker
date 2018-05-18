@@ -13,7 +13,7 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 /**
- * Сервис получающий JMS сообщения с информацией о прогнозе погоды и делающий запрос для ее сохранения в базу данных
+ * Сервис, получающий JMS сообщения с информацией о прогнозе погоды и делающий запрос для ее сохранения в базу данных
  */
 @MessageDriven(name = "DataReceiver", activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:jboss/weatherQueue"),

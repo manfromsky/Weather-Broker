@@ -57,6 +57,13 @@ public class SendServiceImplTest {
     @TestSubject
     private SendServiceImpl sendService = new SendServiceImpl(service);
 
+    /**
+     * Проверяем вызов методов: XmlServiceImpl.createXmlMessage(XmlModel xml),
+     * ActiveMQConnectionForContext.createContext(), ActiveMQXAJMSContext.createProducer(),
+     * JMSProducer.send(Destination destination, String body)
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при попытке отправки JMS сообщения
+     */
     @Test
     public void testSend() throws WeatherBrokerServiceException {
         expect(service.createXmlMessage(cityModel)).andStubReturn(TEST_STRING);
@@ -67,15 +74,29 @@ public class SendServiceImplTest {
         replay(topic);
         replay(connectionFactory);
         replay(service);
+        replay(producer);
         sendService.send(city);
         verify(service);
+        verify(connectionFactory);
+        verify(context);
+        verify(producer);
     }
 
+    /**
+     * Проверяем, сгенерируется ли исключение при попытке передать методу пустую строку
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при попытке передать методу пустую строку
+     */
     @Test(expected = EmptyOrNullCityException.class)
     public void testSendEmptyCity() throws WeatherBrokerServiceException {
         sendService.send(emptyCity);
     }
 
+    /**
+     * Проверяем, сгенерируется ли исключение при попытке передать методу строку равную null
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированное при попытке передать методу строку равную null
+     */
     @Test(expected = EmptyOrNullCityException.class)
     public void testSendNullCity() throws WeatherBrokerServiceException {
         sendService.send(nullCity);

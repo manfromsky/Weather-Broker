@@ -82,6 +82,16 @@ public class ForecastServiceImplTest {
     @TestSubject
     private ForecastServiceImpl forecastService = new ForecastServiceImpl(service);
 
+    /**
+     * Проверяем вызовы методов: XmlServiceImp.readXmlMessage(String xml, Class<T> modelClass),
+     * XmlServiceImp.createXmlMessage(XmlModel xml, ActiveMQConnectionFactory.createContext(),
+     * ActiveMQXAJMSContext.createProducer(), JMSProducer.setDeliveryMode(int var1),
+     * JMSProducer.send(Destination var1, String var2), RestTemplate.getForObject(URI url, Class<T> responseType)
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированная при получении меодом пустой или равной null строки
+     * @throws URISyntaxException            Исключение, указывающая на то, что строка не может быть принята как URI
+     *                                       reference
+     */
     @Test
     public void testCreateAndSendMessage() throws WeatherBrokerServiceException, URISyntaxException {
         expect(service.readXmlMessage(xml, City.class)).andStubReturn(city);
@@ -105,11 +115,23 @@ public class ForecastServiceImplTest {
         verify(connectionFactory);
     }
 
+    /**
+     * Проверяем, сгенерируется ли исключение при получении методом строки равной null
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированная при получении меодом пустой или равной null
+     *                                       строки
+     */
     @Test(expected = WeatherBrokerServiceException.class)
     public void testCreateAndSendMessageWithNullCityName() throws WeatherBrokerServiceException {
         forecastService.createAndSendMessage(nullCityName);
     }
 
+    /**
+     * Проверяем, сгенерируется ли исключение при получении методом пустой строки
+     *
+     * @throws WeatherBrokerServiceException Исключение, сгенерированная при получении меодом пустой или равной null
+     *                                       строки
+     */
     @Test(expected = WeatherBrokerServiceException.class)
     public void testCreateAndSendMessageWithEmptyCityName() throws WeatherBrokerServiceException {
         forecastService.createAndSendMessage(emptyCityName);

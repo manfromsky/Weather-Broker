@@ -28,17 +28,11 @@ public class WeatherDaoImpl implements WeatherDao {
      */
     @Override
     public ForecastEntity getByCityAndDate(ForecastFilter filter) throws WeatherBrokerServiceException {
-        if (filter == null) {
-            throw new WeatherBrokerServiceException(
-                    "no information is available to search for the forecast (param filter is null)"
-            );
+        if (filter.date == null || StringUtils.isBlank(filter.city)) {
+            throw new WeatherBrokerServiceException("date or city is empty");
         }
         Date date = filter.date;
         String city = filter.city;
-        if (date == null && StringUtils.isBlank(city)) {
-            throw new WeatherBrokerServiceException("date or city is empty");
-        }
-
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<ForecastEntity> criteriaQuery = builder.createQuery(ForecastEntity.class);
         Root<ForecastEntity> root = criteriaQuery.from(ForecastEntity.class);
