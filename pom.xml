@@ -35,6 +35,10 @@
         <reactive-streams.version>1.0.2</reactive-streams.version>
         <jstl.version>1.2</jstl.version>
         <lang3.version>3.7</lang3.version>
+        <JUnit.version>4.12</JUnit.version>
+        <easymock.version>3.6</easymock.version>
+        <activemq.version>2.5.0</activemq.version>
+        <yasson.version>1.0.1</yasson.version>
     </properties>
 
     <build>
@@ -212,6 +216,26 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${JUnit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>${easymock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-jms-client</artifactId>
+                <version>${activemq.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

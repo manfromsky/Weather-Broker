@@ -1,6 +1,7 @@
 package ru.shushpanov.weatherforecast.weatherservice.view;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class ForecastView {
 
@@ -81,5 +82,24 @@ public class ForecastView {
                 ", lowTemp='" + lowTemp + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForecastView that = (ForecastView) o;
+        return Objects.equals(date, that.date) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(day, that.day) &&
+                Objects.equals(highTemp, that.highTemp) &&
+                Objects.equals(lowTemp, that.lowTemp) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(date, city, day, highTemp, lowTemp, description);
     }
 }

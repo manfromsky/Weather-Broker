@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Прогноз погоды
@@ -67,6 +68,19 @@ public class ForecastEntity {
     @NotNull
     @Column(name = "low_temp ", length = 3)
     private String lowTemp;
+
+    public ForecastEntity(@NotNull Date date, @NotNull String city, @NotNull String day, @NotNull String highTemp,
+                          @NotNull String lowTemp, @NotNull String description) {
+        this.date = date;
+        this.city = city;
+        this.day = day;
+        this.highTemp = highTemp;
+        this.lowTemp = lowTemp;
+        this.description = description;
+    }
+
+    public ForecastEntity() {
+    }
 
     /**
      * Описание погоды
@@ -139,6 +153,25 @@ public class ForecastEntity {
                 ", lowTemp='" + lowTemp + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForecastEntity entity = (ForecastEntity) o;
+        return Objects.equals(date, entity.date) &&
+                Objects.equals(city, entity.city) &&
+                Objects.equals(day, entity.day) &&
+                Objects.equals(highTemp, entity.highTemp) &&
+                Objects.equals(lowTemp, entity.lowTemp) &&
+                Objects.equals(description, entity.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(date, city, day, highTemp, lowTemp, description);
     }
 }
 

@@ -5,6 +5,14 @@ public class YahooChannel {
     private YahooLocation location;
     private YahooItem item;
 
+    public YahooChannel(YahooLocation location, YahooItem item) {
+        this.location = location;
+        this.item = item;
+    }
+
+    public YahooChannel() {
+    }
+
     public YahooLocation getLocation() {
         return location;
     }

@@ -1,5 +1,6 @@
 package ru.shushpanov.weatherbroker.yahoo_weather.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -39,12 +40,11 @@ public class ForecastServiceImpl implements ForecastService {
     private ConnectionFactory connection;
 
     private XmlService xmlService;
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Inject
     public ForecastServiceImpl(XmlService xmlService) {
         this.xmlService = xmlService;
-        this.restTemplate = new RestTemplate();
     }
 
     public ForecastServiceImpl() {
@@ -55,6 +55,9 @@ public class ForecastServiceImpl implements ForecastService {
      */
     @Override
     public void createAndSendMessage(String xml) throws WeatherBrokerServiceException {
+        if (StringUtils.isBlank(xml)) {
+            throw new WeatherBrokerServiceException("Please enter the name of the city");
+        }
         City city = xmlService.readXmlMessage(xml, City.class);
         String cityName = city.getName();
         YahooWeatherResponse response = getResponseFromYahooWeather(cityName);

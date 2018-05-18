@@ -9,6 +9,18 @@ public class YahooForecast {
     private String low;
     private String text;
 
+    public YahooForecast(String code, String date, String day, String high, String low, String text) {
+        this.code = code;
+        this.date = date;
+        this.day = day;
+        this.high = high;
+        this.low = low;
+        this.text = text;
+    }
+
+    public YahooForecast() {
+    }
+
     public String getCode() {
         return code;
     }

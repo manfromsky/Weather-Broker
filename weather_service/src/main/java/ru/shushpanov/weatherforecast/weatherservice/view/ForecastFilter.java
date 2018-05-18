@@ -26,6 +26,14 @@ public class ForecastFilter {
         return city;
     }
 
+    public ForecastFilter(Date date, String city) {
+        this.date = date;
+        this.city = city;
+    }
+
+    public ForecastFilter() {
+    }
+
     @Override
     public String toString() {
         return "ForecastFilter{" +

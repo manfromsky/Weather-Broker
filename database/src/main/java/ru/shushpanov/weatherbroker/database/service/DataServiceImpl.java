@@ -1,5 +1,6 @@
 package ru.shushpanov.weatherbroker.database.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.shushpanov.weatherbroker.database.dao.ForecastDao;
@@ -41,8 +42,8 @@ public class DataServiceImpl implements DataService {
     @Override
     @Transactional
     public void save(String xml) throws WeatherBrokerServiceException {
-        if (xml == null) {
-            throw new WeatherBrokerServiceException("message contain name of the city is null");
+        if (StringUtils.isBlank(xml)) {
+            throw new WeatherBrokerServiceException("message contain name of the city is null or empty");
         }
         Forecast forecast = transformXmlMessageToModel(xml);
         log.debug("Transformed object from xml: {}", forecast);

@@ -17,7 +17,7 @@ import ru.shushpanov.weatherforecast.weatherservice.view.ForecastView;
 public class WeatherServiceImpl implements WeatherService {
 
     private final Logger log = LoggerFactory.getLogger(WeatherServiceImpl.class);
-    private final WeatherDao dao;
+    private WeatherDao dao;
 
     public WeatherServiceImpl(WeatherDao dao) {
         this.dao = dao;

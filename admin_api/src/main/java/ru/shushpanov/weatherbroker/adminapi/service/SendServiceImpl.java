@@ -3,7 +3,7 @@ package ru.shushpanov.weatherbroker.adminapi.service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.shushpanov.weatherbroker.error.exeption.EmptyCityException;
+import ru.shushpanov.weatherbroker.error.exeption.EmptyOrNullCityException;
 import ru.shushpanov.weatherbroker.error.exeption.WeatherBrokerServiceException;
 import ru.shushpanov.weatherbroker.messageservice.model.City;
 import ru.shushpanov.weatherbroker.messageservice.service.XmlService;
@@ -12,8 +12,8 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
 import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Topic;
 
 /**
@@ -47,12 +47,13 @@ public class SendServiceImpl implements SendService {
     @Override
     public void send(String city) throws WeatherBrokerServiceException {
         if (StringUtils.isBlank(city)) {
-            throw new EmptyCityException("Please enter the name of the city");
+            throw new EmptyOrNullCityException("Please enter the name of the city");
         }
         City writeCity = new City(city);
         String message = xmlService.createXmlMessage(writeCity);
         try (JMSContext context = connection.createContext()) {
-            context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT).send(topic, message);
+            JMSProducer producer = context.createProducer();
+            producer.send(topic, message);
         }
         log.info("Message to send: {}", city);
     }

@@ -7,6 +7,15 @@ public class YahooLocation {
     private String country;
     private String region;
 
+    public YahooLocation(String city, String country, String region) {
+        this.city = city;
+        this.country = country;
+        this.region = region;
+    }
+
+    public YahooLocation() {
+    }
+
     public String getCity() {
         return city;
     }
